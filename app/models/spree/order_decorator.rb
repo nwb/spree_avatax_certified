@@ -28,7 +28,7 @@ Spree::Order.class_eval do
     logger.info "Start avalara_capture_finalize for order #{number}"
 
     create_avalara_transaction if avalara_transaction.nil?
-
+    return true unless %w(GA CA).include? avalara_transaction.order.ship_address.state.abbr
     avalara_transaction.commit_avatax_final('SalesInvoice')
   end
 
